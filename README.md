@@ -321,20 +321,6 @@ we use RedHat OS for this project
     ![5050](https://user-images.githubusercontent.com/85270361/210138669-88078473-e459-4864-856f-4e6cb3d457d6.PNG)
 
 
-    If you see this message – it means your WordPress has successfully connected to your remote MySQL database
-    
-
-    ![5060](https://user-images.githubusercontent.com/85270361/210138718-d9c15bc9-f5b0-45f8-b613-11882374bf63.PNG)
-
-    
-    Important: Do not forget to STOP your EC2 instances after completion of the project to avoid extra costs.
-
-    CONGRATULATIONS!
-    You have learned how to configure Linux storage susbystem and have also deployed a full-scale Web Solution using WordPress CMS and
-    MySQL RDBMS!
-    
-
-    ![5070](https://user-images.githubusercontent.com/85270361/210138753-775e4c79-c634-473a-9330-254b209347d1.PNG)
 
 
 
