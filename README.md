@@ -71,7 +71,7 @@ we use RedHat OS for this project
 3. Use lsblk utility to view the newly configuredpartition on each of the 3 disks.
 
    
- ![lsblkDB](/git/screenshots/lsblk%20DB.png)
+ ![lsblkDB](/screenshots/lsblk%20DB.png)
 
 4. Install lvm2 package using `sudo yum install lvm2`. 
 
@@ -96,7 +96,7 @@ we use RedHat OS for this project
     sudo vgs
     ```
 
-    ![sudo vgs](/git/screenshots/sudo%20vgs.png)
+    ![sudo vgs](/screenshots/sudo%20vgs.png)
 
 
 8. Use lvcreate utility to create 2 logical volumes. apps-lv (Use half of the PV size), and logs-lv Use the remaining space of
@@ -120,7 +120,7 @@ we use RedHat OS for this project
     sudo lvs
     ```
 
-    ![sudo lvs](/git/screenshots/sudo%20lvs.png)
+    ![sudo lvs](/screenshots/sudo%20lvs.png)
 
 
     
