@@ -15,7 +15,7 @@ experience of working with disks, partitions and volumes in Linux.
 
 Three-tier Architecture is a client-server software architecture pattern that comprise of 3 separate layers.
 
-![3-tier Architecture ](/git/screenshots/3-tier%20Architecture.svg)
+![3-tier Architecture ](/screenshots/3-tier%20Architecture.svg)
 1. Presentation Layer (PL): This is the user interface such as the client server or browser on your laptop.
 2. Business Layer (BL): This is the backend program that implements business logic. Application or Webserver
 3. Data Access or Management Layer (DAL): This is the layer for computer data storage and data access. [Database](https://www.computerhope.com/jargon/d/database-server.htm) Server or File System Server such as [FTP](https://titanftp.com/2022/07/05/what-is-an-ftp-server/) server, or [NFS](https://www.techtarget.com/searchenterprisedesktop/definition/Network-File-System) Server
@@ -30,11 +30,11 @@ we use RedHat OS for this project
 
  **instance**
 
- ![instance](/git/screenshots/instance.png)
+ ![instance](/screenshots/instance.png)
 
  **Volumes**
 
- ![Volumes](/git/screenshots/Volumes.png)
+ ![Volumes](/screenshots/Volumes.png)
 
  2. Use gdisk utility to create a single partition on each of the 3 disks and repeat it for DB .
 
@@ -183,8 +183,8 @@ we use RedHat OS for this project
     sudo blkid
     ```
 
-    ![blkid](/git/screenshots/blkid.png)
-    ![blkid](/git/screenshots/blkid-web.png)
+    ![blkid](/screenshots/blkid.png)
+    ![blkid](/screenshots/blkid-web.png)
 
     ```
     sudo vim /etc/fstab
@@ -192,8 +192,8 @@ we use RedHat OS for this project
 
     Update /etc/fstab in each **Web and DB server**quotes.
 
-    ![fstab](/git/screenshots/-etc-fstab.png)
-    ![fstab](/git/screenshots/-etc-fstab-web.png)
+    ![fstab](/screenshots/-etc-fstab.png)
+    ![fstab](/screenshots/-etc-fstab-web.png)
         
 
 
