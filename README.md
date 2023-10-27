@@ -318,7 +318,7 @@ we use RedHat OS for this project
     
     Fill out your DB credentials:
     
-    ![5050](https://user-images.githubusercontent.com/85270361/210138669-88078473-e459-4864-856f-4e6cb3d457d6.PNG)
+    ![5050](/screenshots/setp%20wordpress.png)
 
     
 
