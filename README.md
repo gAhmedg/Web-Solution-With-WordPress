@@ -3,7 +3,7 @@ In this project we will  prepare storage infrastructure on 2 Linux servers and i
 WordPress. 
 WordPress is a free and open-source content management system written in PHP and paired with MySQL as it's backend Relational Database Management System (RDBMS).
 
-# Project 6 consists of two parts:
+# Project consists of two parts:
 
 1. Configure storage subsystem for Web and Database servers based on Linux OS. The focus of this part is to give you practical 
 experience of working with disks, partitions and volumes in Linux.
@@ -15,7 +15,7 @@ experience of working with disks, partitions and volumes in Linux.
 
 Three-tier Architecture is a client-server software architecture pattern that comprise of 3 separate layers.
 
-![5021](https://user-images.githubusercontent.com/85270361/210136746-989083fe-d67f-4454-97d5-5f7cc8f921f3.PNG)
+![3-tier Architecture ](/git/screenshots/3-tier%20Architecture.svg)
 1. Presentation Layer (PL): This is the user interface such as the client server or browser on your laptop.
 2. Business Layer (BL): This is the backend program that implements business logic. Application or Webserver
 3. Data Access or Management Layer (DAL): This is the layer for computer data storage and data access. [Database](https://www.computerhope.com/jargon/d/database-server.htm) Server or File System Server such as [FTP](https://titanftp.com/2022/07/05/what-is-an-ftp-server/) server, or [NFS](https://www.techtarget.com/searchenterprisedesktop/definition/Network-File-System) Server
