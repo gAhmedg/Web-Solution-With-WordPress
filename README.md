@@ -70,8 +70,13 @@ we use RedHat OS for this project
 
 3. Use lsblk utility to view the newly configuredpartition on each of the 3 disks.
 
-   
- ![lsblkDB](/screenshots/lsblk%20DB.png)
+    **Web-server**
+
+    ![lsblkweb](/screenshots/lsblk%20web.png)
+
+    **DB-server**
+
+    ![lsblkDB](/screenshots/lsblk%20DB.png)
 
 4. Install lvm2 package using `sudo yum install lvm2`. 
 
