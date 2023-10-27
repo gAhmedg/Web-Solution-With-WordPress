@@ -35,7 +35,7 @@ We use RedHat OS for both Web and DB servers
  ![Volumes](/screenshots/Volumes.png)
 
 ---------------------------------------------------------
- **2.** Use gdisk utility to create a single partition on each of the 3 disks and repeat it for DB .
+ 2. Use gdisk utility to create a single partition on each of the 3 disks and repeat it for DB .
 
     ```sudo gdisk /dev/xvdf ```
 
