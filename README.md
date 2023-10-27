@@ -306,7 +306,7 @@ we use RedHat OS for this project
 
  - Verify if you can successfully execute SHOW DATABASES; command and see a list of existing databases.
 
-    ![mysql-web](/screenshots/mysql-web.png)
+    
  
 
  - Try to access from your browser the link to your WordPress 
@@ -320,6 +320,7 @@ we use RedHat OS for this project
     
     ![5050](https://user-images.githubusercontent.com/85270361/210138669-88078473-e459-4864-856f-4e6cb3d457d6.PNG)
 
+    ![mysql-web](/screenshots/mysql-web.png)
 
 
 
