@@ -36,6 +36,7 @@ we use RedHat OS for this project
 
  ![Volumes](/screenshots/Volumes.png)
 
+---------------------------------------------------------
  2. Use gdisk utility to create a single partition on each of the 3 disks and repeat it for DB .
 
     ```sudo gdisk /dev/xvdf ```
@@ -67,7 +68,7 @@ we use RedHat OS for this project
     Now,  your changes has been configured succesfuly, exit out of the gdisk console and do the same for the remaining disks.
     ```
 
-
+---------------------------------------------------------
 3. Use lsblk utility to view the newly configuredpartition on each of the 3 disks.
 
     **Web-server**
@@ -77,10 +78,10 @@ we use RedHat OS for this project
     **DB-server**
 
     ![lsblkDB](/screenshots/lsblk%20DB.png)
-
+---------------------------------------------------------
 4. Install lvm2 package using `sudo yum install lvm2`. 
 
-    
+ ---------------------------------------------------------   
 5. Use pvcreate utility to mark each of 3 disks as physical volumes (PVs) to be used by LVM
 
     ```
@@ -88,13 +89,13 @@ we use RedHat OS for this project
     sudo pvcreate /dev/xvdg1
     sudo pvcreate /dev/xvdh1
     ```
-
+---------------------------------------------------------
 6. Use vgcreate utility to add all 3 PVs to a volume group (VG). Name the VG webdata-vg
 
     ```
     sudo vgcreate webdata-vg /dev/xvdh1 /dev/xvdg1 /dev/xvdf1
     ```
-
+---------------------------------------------------------
 7. Verify that your VG has been created successfully by running 
 
     ```
@@ -103,7 +104,7 @@ we use RedHat OS for this project
 
     ![sudo vgs](/screenshots/sudo%20vgs.png)
 
-
+---------------------------------------------------------
 8. Use lvcreate utility to create 2 logical volumes. apps-lv (Use half of the PV size), and logs-lv Use the remaining space of
     the PV size. NOTE: apps-lv will be used to store data for the Website while, logs-lv will be used to store data for logs.
 
@@ -118,7 +119,7 @@ we use RedHat OS for this project
     sudo lvcreate -n apps-lv -L 14G webdata-vg
     sudo lvcreate -n logs-lv -L 14G webdata-vg
     ```
-
+---------------------------------------------------------
 9. Verify that your Logical Volume has been created successfully by running 
 
     ```
@@ -126,10 +127,8 @@ we use RedHat OS for this project
     ```
 
     ![sudo lvs](/screenshots/sudo%20lvs.png)
-
-
-    
-
+ 
+---------------------------------------------------------
 10. Use mkfs.ext4 to format the logical volumes with ext4 filesystem
 
      **Web-server**
@@ -145,7 +144,7 @@ we use RedHat OS for this project
     sudo mkfs -t ext4 /dev/webdata-vg/db-lv
     sudo mkfs -t ext4 /dev/webdata-vg/logs-lv
     ```
-
+---------------------------------------------------------
 11. Create /var/www/html directory to store website files in web server and for DB-server /db directory to store DB files.
 
     **Web-server**
@@ -157,6 +156,7 @@ we use RedHat OS for this project
 
         
         sudo mkdir -p /db
+---------------------------------------------------------
         
 12. Create /home/recovery/logs to store backup of log data , Mount /var/www/html on apps-lv logical volume (don't forget to mount DB into /db)and Use rsync backup all the files in the log directory /var/log into /home/recovery/logs
 
@@ -168,7 +168,7 @@ we use RedHat OS for this project
 
 
     
-
+---------------------------------------------------------
 
 13. Mount /var/log on logs-lv logical volume then restore log files back into /var/log directory
 
@@ -178,7 +178,7 @@ we use RedHat OS for this project
 
     ```
 
-    
+ ---------------------------------------------------------   
 
 14. UPDATE THE `/ETC/FSTAB` FILE in each **Web and DB server**
 
@@ -199,7 +199,142 @@ we use RedHat OS for this project
 
     ![fstab](/screenshots/-etc-fstab.png)
     ![fstab](/screenshots/-etc-fstab-web.png)
-        
+
+    ---------------------------------------------------------
+15. Test the configuration and reload the daemon then Verify your setup by  running  ``` df -h ```
+
+    ```
+    sudo mount -a
+    sudo systemctl daemon-reload
+    ```
+
+    **Web-server**
+
+    ![df-h](/screenshots/df-h%20-web.png)
+
+    **DB-server**
+
+    ![df-h](/screenshots/df-h%20-db.png)
+
+
+    ---------------------------------------------------------
+
+### 16.  Install WordPress on your Web Server EC2
+
+
+ - Update the repository and install wget, Apache and it’s dependencies
+
+        ```
+        sudo yum -y update
+        sudo yum -y install wget httpd php php-mysqlnd php-fpm php-json
+        sudo systemctl enable httpd
+        sudo systemctl start httpd
+        ```
+
+ - install PHP and it’s depemdencies and restart Apache
+
+        ```
+        sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+        sudo yum install yum-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm
+        sudo yum module list php
+        sudo yum module reset php
+        sudo yum module enable php:remi-7.4
+        sudo yum install php php-opcache php-gd php-curl php-mysqlnd
+        sudo systemctl start php-fpm
+        sudo systemctl enable php-fpm
+        sudo setsebool -P httpd_execmem 1
+        sudo systemctl restart httpd
+        ```
+
+
+
+
+ - Download wordpress and copy wordpress to var/www/html
+
+    ```
+    mkdir wordpress
+    cd   wordpress
+    sudo wget http://wordpress.org/latest.tar.gz
+    sudo tar xzvf latest.tar.gz
+    sudo rm -rf latest.tar.gz
+    sudo cp wordpress/wp-config-sample.php wordpress/wp-config.php
+    sudo cp -R wordpress /var/www/html/
+    ```
+
+
+ - Configure SELinux Policies
+
+    ```
+    sudo chown -R apache:apache /var/www/html/wordpress
+    sudo chcon -t httpd_sys_rw_content_t /var/www/html/wordpress -R
+    sudo setsebool -P httpd_can_network_connect=1
+    ```
+---
+ ### 17.prepare DB Server EC2
+ - Install MySQL on your DB Server EC2
+    ```
+    sudo yum update
+    sudo yum install mysql-server
+    sudo systemctl restart mysqld
+    sudo systemctl enable mysqld
+    ```
+
+    
+ - Configure DB to work with WordPress (Do not forget to open MySQL port 3306 on DB Server)
+
+    ```
+    sudo mysql
+    CREATE DATABASE wordpress;
+    CREATE USER `myuser`@`<Web-Server-Private-IP-Address>` IDENTIFIED BY '123';
+    GRANT ALL ON wordpress.* TO 'myuser'@'<Web-Server-Private-IP-Address>';
+    FLUSH PRIVILEGES;
+    SHOW DATABASES;
+    exit
+    ```
+
+    ![mysql](/screenshots/mysql.png)
+
+---
+
+### 18. Install MySQL client and test connection from your Web Server to your DB server by using mysql-client
+
+ - Install mysql
+    ```
+    sudo yum install mysql
+    sudo mysql -u myuser -p -h <DB-Server-Private-IP-address>
+    ```
+
+ - Verify if you can successfully execute SHOW DATABASES; command and see a list of existing databases.
+
+    ![mysql-web](/screenshots/mysql-web.png)
+ 
+
+ - Try to access from your browser the link to your WordPress 
+
+    http ://<Web-Server-Public-IP-Address>/wordpress/
+    
+    ![5040](/screenshots/wordpress.png)
+
+    
+    Fill out your DB credentials:
+    
+    ![5050](https://user-images.githubusercontent.com/85270361/210138669-88078473-e459-4864-856f-4e6cb3d457d6.PNG)
+
+
+    If you see this message – it means your WordPress has successfully connected to your remote MySQL database
+    
+
+    ![5060](https://user-images.githubusercontent.com/85270361/210138718-d9c15bc9-f5b0-45f8-b613-11882374bf63.PNG)
+
+    
+    Important: Do not forget to STOP your EC2 instances after completion of the project to avoid extra costs.
+
+    CONGRATULATIONS!
+    You have learned how to configure Linux storage susbystem and have also deployed a full-scale Web Solution using WordPress CMS and
+    MySQL RDBMS!
+    
+
+    ![5070](https://user-images.githubusercontent.com/85270361/210138753-775e4c79-c634-473a-9330-254b209347d1.PNG)
 
 
 
